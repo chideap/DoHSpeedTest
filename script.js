@@ -19,7 +19,7 @@
  */
 const checkButton = document.getElementById('checkButton');
 const editButton = document.getElementById('editButton');
-const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'weixin.qq.com'];
+const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'www.jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'weixin.qq.com'];
 // Global variable to store chart instance
 const dnsServers = [{
     name: "AdGuard", url: "https://dns.adguard-dns.com/dns-query", ips: ["94.140.14.14", "94.140.15.15"]
@@ -52,7 +52,7 @@ const dnsServers = [{
 }, {
     name: "Google", url: "https://dns.google/resolve", type: "get", allowCors: true, ips: ["8.8.8.8", "8.8.4.4"]
 }, {
-    name: "Mullvad", url: "https://doh.mullvad.net/dns-query", ips: ["193.138.218.74", "194.242.2.2"]
+    name: "TW101", url: "https://dns.twnic.tw/dns-query", ips: ["101.101.101.101", "194.242.2.2"]
 }, {
     name: "NextDNS", url: "https://dns.nextdns.io", type: "get", ips: ["45.90.28.0", "45.90.30.0"]
 }, {
@@ -60,7 +60,7 @@ const dnsServers = [{
 }, {
     name: "DNS0.EU", url: "https://zero.dns0.eu/", ips: ["193.110.81.9", "185.253.5.9"]
 }, {
-    name: "Quad9", url: "https://dns.quad9.net/dns-query", ips: ["9.9.9.9", "149.112.112.112"]
+    name: "Quad9", url: "https://dns10.quad9.net/dns-query", ips: ["9.9.9.10", "149.112.112.10"]
 }, {
     name: "360", url: "https://doh.360.cn/dns-query", ips: ["101.226.4.6", "180.163.224.54"]
 }, {
@@ -73,8 +73,6 @@ const dnsServers = [{
     ips: ["185.95.218.42", "185.95.218.43"]
 }, {
     name: "DNS for Family", url: "https://dns-doh.dnsforfamily.com/dns-query", ips: ["94.130.180.225", "78.47.64.161"]
-}, {
-    name: "Restena", url: "https://kaitain.restena.lu/dns-query", ips: ["158.64.1.29", "158.64.1.30"]
 }, {
     name: "IIJ", url: "https://public.dns.iij.jp/dns-query", ips: ["203.180.164.45", "203.180.166.45"]
 }, {
