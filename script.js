@@ -47,9 +47,7 @@ const dnsServers = [{
     ips: ["185.222.222.222", "45.11.45.11"]
 }, {
     name: "DNSPod",
-    url: "https://dns.pub/dns-query",
-    type: "get",
-    allowCors: true,
+    url: "https://doh.pub/dns-query",
     ips: ["1.12.12.12", "120.53.53.53"]
 }, {
     name: "Google", url: "https://dns.google/resolve", type: "get", allowCors: true, ips: ["8.8.8.8", "8.8.4.4"]
