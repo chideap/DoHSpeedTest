@@ -50,7 +50,7 @@ const dnsServers = [{
     url: "https://dns.pub/dns-query",
     type: "get",
     allowCors: true,
-    ips: ["119.29.29.29", "182.254.116.116"]
+    ips: ["1.12.12.12", "120.53.53.53"]
 }, {
     name: "Google", url: "https://dns.google/resolve", type: "get", allowCors: true, ips: ["8.8.8.8", "8.8.4.4"]
 }, {
