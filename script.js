@@ -60,7 +60,7 @@ const dnsServers = [{
 }, {
     name: "DNS0.EU", url: "https://zero.dns0.eu/", ips: ["193.110.81.9", "185.253.5.9"]
 }, {
-    name: "Quad9", url: "https://dns.quad9.net/dns-query", ips: ["9.9.9.9", "149.112.112.112"]
+    name: "Quad9", url: "https://dns.quad9.net/dns-query", ips: ["9.9.9.11", "9.9.9.12"]
 }, {
     name: "360", url: "https://doh.360.cn/dns-query", ips: ["101.226.4.6", "180.163.224.54"]
 }, {
