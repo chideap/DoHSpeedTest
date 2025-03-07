@@ -13,14 +13,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * {name:"Cloudflare",url:"https://cloudflare-dns.com/dns-query",type:"get",allowCors:true,ips:["1.1.1.1","1.0.0.1"]},{name:"Google",url:"https://dns.google/resolve",type:"get",allowCors:true,ips:["8.8.8.8","8.8.4.4"]},
  * You should have received a copy of the GNU General Public License
  * along with DoHSpeedTest. If not, see <http://www.gnu.org/licenses/>.
- *{name:"Cloudflare",url:"https://cloudflare-dns.com/dns-query",type:"get",allowCors:true,ips:["1.1.1.1","1.0.0.1"]},{name:"Google",url:"https://dns.google/resolve",type:"get",allowCors:true,ips:["8.8.8.8","8.8.4.4"]},
  */
 const checkButton = document.getElementById('checkButton');
 const editButton = document.getElementById('editButton');
-const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'www.jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'www.amazon.com'];
+const topWebsites = ['google.com', 'youtube.com', 'facebook.com', 'amazon.com', 'yahoo.com', 'wikipedia.org', 'twitter.com', 'instagram.com', 'linkedin.com', 'netflix.com'];
 // Global variable to store chart instance
 const dnsServers = [{
 	name: "AliDNS",
@@ -51,278 +50,246 @@ const dnsServers = [{
 let dnsChart;
 
 function updateChartWithData(server) {
-	const chartContainer = document.getElementById('chartContainer');
-	const ctx = document.getElementById('dnsChart').getContext('2d');
+    const chartContainer = document.getElementById('chartContainer');
+    const ctx = document.getElementById('dnsChart').getContext('2d');
 
-	// Display the chart container if it's hidden and there's valid data
-	if (server.speed.min !== 'Unavailable' && window.innerWidth > 768) {
-		chartContainer.classList.remove('hidden');
-	}
+    // Display the chart container if it's hidden and there's valid data
+    if (server.speed.min !== 'Unavailable' && window.innerWidth > 768) {
+        chartContainer.classList.remove('hidden');
+    }
 
-	// Initialize the chart if it doesn't exist, with the new line chart structure
-	if (!dnsChart) {
-		dnsChart = new Chart(ctx, {
-			type: 'line', // Changed to 'line'
-			data: {
-				labels: topWebsites, // Assuming topWebsites is the array of websites
-				datasets: [] // Start with an empty array of datasets
-			},
-			options: {
-				responsive: true,
-				scales: {
-					y: {
-						beginAtZero: true
-					}
-				},
-				plugins: {
-					zoom: {
-						zoom: {
-							wheel: {
-								enabled: true, // Enable zooming with mouse wheel
-							},
-							pinch: {
-								enabled: true // Enable zooming with pinch gestures
-							},
-							mode: 'xy', // Zoom both x and y axes
-						},
-						pan: {
-							enabled: true,
-							mode: 'xy' // Pan both x and y axes
-						}
-					}
-				}
-			}
-		});
-	}
+    // Initialize the chart if it doesn't exist, with the new line chart structure
+    if (!dnsChart) {
+        dnsChart = new Chart(ctx, {
+            type: 'line', // Changed to 'line'
+            data: {
+                labels: topWebsites, // Assuming topWebsites is the array of websites
+                datasets: [] // Start with an empty array of datasets
+            }, options: {
+                responsive: true, scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }, plugins: {
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true, // Enable zooming with mouse wheel
+                            }, pinch: {
+                                enabled: true // Enable zooming with pinch gestures
+                            }, mode: 'xy', // Zoom both x and y axes
+                        }, pan: {
+                            enabled: true, mode: 'xy' // Pan both x and y axes
+                        }
+                    }
+                }
+            }
+        });
+    }
 
-	// Find the dataset for the current server
-	const serverIndex = dnsChart.data.datasets.findIndex(dataset => dataset.label === server.name);
+    // Find the dataset for the current server
+    const serverIndex = dnsChart.data.datasets.findIndex(dataset => dataset.label === server.name);
 
-	// Prepare the server data for the chart (speed results for each website)
-	const serverData = server.individualResults.map(result => result.speed === 'Unavailable' ? null : result.speed);
+    // Prepare the server data for the chart (speed results for each website)
+    const serverData = server.individualResults.map(result => result.speed === 'Unavailable' ? null : result.speed);
 
-	if (serverIndex === -1) {
-		// If the server is not in the chart, add it as a new dataset
-		const newDataset = {
-			label: server.name,
-			data: serverData,
-			fill: false,
-			borderColor: getRandomColor(), // A function to generate a random color
-			borderWidth: 2,
-			lineTension: 0.1 // Adjust for line smoothness
-		};
-		dnsChart.data.datasets.push(newDataset);
-	} else {
-		// If the server is already in the chart, update its data
-		dnsChart.data.datasets[serverIndex].data = serverData;
-	}
+    if (serverIndex === -1) {
+        // If the server is not in the chart, add it as a new dataset
+        const newDataset = {
+            label: server.name, data: serverData, fill: false, borderColor: getRandomColor(), // A function to generate a random color
+            borderWidth: 2, lineTension: 0.1 // Adjust for line smoothness
+        };
+        dnsChart.data.datasets.push(newDataset);
+    } else {
+        // If the server is already in the chart, update its data
+        dnsChart.data.datasets[serverIndex].data = serverData;
+    }
 
-	// Update the chart to reflect the new or updated data
-	dnsChart.update();
+    // Update the chart to reflect the new or updated data
+    dnsChart.update();
 }
 
 // Helper function to generate a random color for the chart lines
 function getRandomColor() {
-	const letters = '0123456789ABCDEF';
-	let color = '#';
-	for (let i = 0; i < 6; i++) {
-		color += letters[Math.floor(Math.random() * 16)];
-	}
-	return color;
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 async function warmUpDNSServers() {
-	// Display the warm-up message
-	// Use the same DNS server list and top websites for warm-up
-	const warmUpPromises = dnsServers.map(server => Promise.all(topWebsites.map(website => measureDNSSpeed(server.url, website, server.type, server.allowCors))));
+    // Display the warm-up message
+    // Use the same DNS server list and top websites for warm-up
+    const warmUpPromises = dnsServers.map(server => Promise.all(topWebsites.map(website => measureDNSSpeed(server.url, website, server.type, server.allowCors))));
 
-	await Promise.all(warmUpPromises);
-	console.log("Warm-up phase completed");
+    await Promise.all(warmUpPromises);
+    console.log("Warm-up phase completed");
 }
 
 async function updateLoadingMessage(message) {
-	document.getElementById('loadingMessage').innerHTML = `${message} <div class="spinner">
+    document.getElementById('loadingMessage').innerHTML = `${message} <div class="spinner">
         <div class="dot dot-1"></div>
         <div class="dot dot-2"></div>
         <div class="dot dot-3"></div>
     </div>`;
 }
 
-checkButton.addEventListener('click', async function() {
-	this.disabled = true;
-	editButton.disabled = true; // Disable the Edit button
-	document.getElementById('loadingMessage').classList.remove('hidden');
+checkButton.addEventListener('click', async function () {
+    this.disabled = true;
+    editButton.disabled = true; // Disable the Edit button
+    document.getElementById('loadingMessage').classList.remove('hidden');
 
-	await updateLoadingMessage('Warming up DNS servers');
-	await warmUpDNSServers();
-	await updateLoadingMessage('Analyzing DNS servers');
-	await performDNSTests();
+    await updateLoadingMessage('Warming up DNS servers');
+    await warmUpDNSServers();
+    await updateLoadingMessage('Analyzing DNS servers');
+    await performDNSTests();
 
-	document.getElementById('loadingMessage').classList.add('hidden');
-	this.disabled = false;
-	editButton.disabled = false; // Re-enable the Edit button
+    document.getElementById('loadingMessage').classList.add('hidden');
+    this.disabled = false;
+    editButton.disabled = false; // Re-enable the Edit button
 });
 
 async function performDNSTests() {
 
-	for (const server of dnsServers) {
-		const speedResults = await Promise.all(topWebsites.map(website => measureDNSSpeed(server.url, website, server.type, server.allowCors)));
+    for (const server of dnsServers) {
+        const speedResults = await Promise.all(topWebsites.map(website => measureDNSSpeed(server.url, website, server.type, server.allowCors)));
 
-		// Map each website to its speed result for the current server
-		server.individualResults = topWebsites.map((website, index) => {
-			const speed = speedResults[index];
-			return {
-				website,
-				speed: speed !== null ? speed : 'Unavailable'
-			};
-		});
+        // Map each website to its speed result for the current server
+        server.individualResults = topWebsites.map((website, index) => {
+            const speed = speedResults[index];
+            return {website, speed: speed !== null ? speed : 'Unavailable'};
+        });
 
-		const validResults = speedResults.filter(speed => speed !== null && typeof speed === 'number');
-		validResults.sort((a, b) => a - b);
+        const validResults = speedResults.filter(speed => speed !== null && typeof speed === 'number');
+        validResults.sort((a, b) => a - b);
 
-		if (validResults.length > 0) {
-			const min = validResults[0];
-			const max = validResults[validResults.length - 1];
-			const median = validResults.length % 2 === 0 ? (validResults[validResults.length / 2 - 1] + validResults[validResults.length / 2]) / 2 : validResults[Math.floor(validResults.length / 2)];
+        if (validResults.length > 0) {
+            const min = validResults[0];
+            const max = validResults[validResults.length - 1];
+            const median = validResults.length % 2 === 0 ? (validResults[validResults.length / 2 - 1] + validResults[validResults.length / 2]) / 2 : validResults[Math.floor(validResults.length / 2)];
+            
+            let sum = 0;
+            for (let i = 0; i < validResults.length; i++) {
+                sum += validResults[i];
+            }
 
-			let sum = 0;
-			for (let i = 0; i < validResults.length; i++) {
-				sum += validResults[i];
-			}
+            const avg = sum / validResults.length;
+                        
 
-			const avg = sum / validResults.length;
+            server.speed = {min, median, max, avg};
+        } else {
+            server.speed = {min: 'Unavailable', median: 'Unavailable', max: 'Unavailable', avg: 'Unavailable'};
+        }
 
-
-			server.speed = {
-				min,
-				median,
-				max,
-				avg
-			};
-		} else {
-			server.speed = {
-				min: 'Unavailable',
-				median: 'Unavailable',
-				max: 'Unavailable',
-				avg: 'Unavailable'
-			};
-		}
-
-		updateResult(server);
-	}
+        updateResult(server);
+    }
 }
 
 async function measureDNSSpeed(dohUrl, hostname, serverType = 'post', allowCors = false) {
-	const controller = new AbortController();
-	const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 seconds timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 seconds timeout
 
-	try {
-		const startTime = performance.now();
-		let response;
+    try {
+        const startTime = performance.now();
+        let response;
 
-		if (serverType === 'get') {
-			const urlWithParam = new URL(dohUrl);
-			urlWithParam.searchParams.append('name', hostname);
-			urlWithParam.searchParams.append('nocache', Date.now());
+        if (serverType === 'get') {
+            const urlWithParam = new URL(dohUrl);
+            urlWithParam.searchParams.append('name', hostname);
+            urlWithParam.searchParams.append('nocache', Date.now());
 
-			let fetchOptions = {
-				method: 'GET',
-				signal: controller.signal
-			};
+            let fetchOptions = {
+                method: 'GET', signal: controller.signal
+            };
 
-			if (allowCors) {
-				fetchOptions.headers = {
-					'Accept': 'application/dns-json'
-				};
-			} else {
-				fetchOptions.mode = 'no-cors';
-			}
+            if (allowCors) {
+                fetchOptions.headers = {'Accept': 'application/dns-json'};
+            } else {
+                fetchOptions.mode = 'no-cors';
+            }
 
-			response = await fetch(urlWithParam, fetchOptions);
-		} else {
-			const dnsQuery = buildDNSQuery(hostname);
-			let fetchOptions = {
-				method: 'POST',
-				body: dnsQuery,
-				mode: allowCors ? 'cors' : 'no-cors',
-				signal: controller.signal
-			};
+            response = await fetch(urlWithParam, fetchOptions);
+        } else {
+            const dnsQuery = buildDNSQuery(hostname);
+            let fetchOptions = {
+                method: 'POST', body: dnsQuery, mode: allowCors ? 'cors' : 'no-cors', signal: controller.signal
+            };
 
-			if (allowCors) {
-				fetchOptions.headers = {
-					'Content-Type': 'application/dns-message'
-				};
-			}
+            if (allowCors) {
+                fetchOptions.headers = {'Content-Type': 'application/dns-message'};
+            }
 
-			response = await fetch(dohUrl, fetchOptions);
-		}
+            response = await fetch(dohUrl, fetchOptions);
+        }
 
-		clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
 
-		if (allowCors && !response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
+        if (allowCors && !response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-		const endTime = performance.now();
-		return endTime - startTime;
-	} catch (error) {
-		clearTimeout(timeoutId);
-		if (error.name === 'AbortError' || error.message === 'NS_BINDING_ABORTED') {
-			console.error('Request timed out or was aborted');
-		} else {
-			console.error('Error during DNS resolution:', error);
-		}
-		return null;
-	}
+        const endTime = performance.now();
+        return endTime - startTime;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError' || error.message === 'NS_BINDING_ABORTED') {
+            console.error('Request timed out or was aborted');
+        } else {
+            console.error('Error during DNS resolution:', error);
+        }
+        return null;
+    }
 }
 
 function buildDNSQuery(hostname) {
-	// Start with a simple DNS header
-	// ID (2 bytes), Flags (2 bytes), QDCOUNT (2 bytes), ANCOUNT (2 bytes), NSCOUNT (2 bytes), ARCOUNT (2 bytes)
-	const header = new Uint8Array([0x00, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+    // Start with a simple DNS header
+    // ID (2 bytes), Flags (2 bytes), QDCOUNT (2 bytes), ANCOUNT (2 bytes), NSCOUNT (2 bytes), ARCOUNT (2 bytes)
+    const header = new Uint8Array([0x00, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
 
-	// Convert hostname to DNS question format
-	const labels = hostname.split('.');
-	const question = labels.flatMap(label => {
-		const length = label.length;
-		return [length, ...Array.from(label).map(c => c.charCodeAt(0))];
-	});
+    // Convert hostname to DNS question format
+    const labels = hostname.split('.');
+    const question = labels.flatMap(label => {
+        const length = label.length;
+        return [length, ...Array.from(label).map(c => c.charCodeAt(0))];
+    });
 
-	// Type (A record = 0x0001) and Class (IN = 0x0001)
-	const typeAndClass = new Uint8Array([0x00, 0x01, 0x00, 0x01]);
+    // Type (A record = 0x0001) and Class (IN = 0x0001)
+    const typeAndClass = new Uint8Array([0x00, 0x01, 0x00, 0x01]);
 
-	// Combine all parts
-	const query = new Uint8Array(header.length + question.length + 2 + typeAndClass.length);
-	query.set(header);
-	query.set(question, header.length);
-	query.set([0x00], header.length + question.length); // Null byte to end the QNAME
-	query.set(typeAndClass, header.length + question.length + 1);
+    // Combine all parts
+    const query = new Uint8Array(header.length + question.length + 2 + typeAndClass.length);
+    query.set(header);
+    query.set(question, header.length);
+    query.set([0x00], header.length + question.length); // Null byte to end the QNAME
+    query.set(typeAndClass, header.length + question.length + 1);
 
-	return query;
+    return query;
 }
 
 function updateResult(server) {
-	const table = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
-	let row = document.querySelector(`tr[data-server-name="${server.name}"]`);
-	let detailsRow;
+    const table = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
+    let row = document.querySelector(`tr[data-server-name="${server.name}"]`);
+    let detailsRow;
 
-	if (!row) {
-		row = document.createElement('tr');
-		row.setAttribute('data-server-name', server.name);
-		row.classList.add('border-b', 'border-gray-300', 'hover:bg-gray-200', 'dark:border-gray-600', 'dark:hover:bg-gray-700');
-		table.appendChild(row);
+    if (!row) {
+        row = document.createElement('tr');
+        row.setAttribute('data-server-name', server.name);
+        row.classList.add('border-b', 'border-gray-300', 'hover:bg-gray-200', 'dark:border-gray-600', 'dark:hover:bg-gray-700');
+        table.appendChild(row);
 
-		// Create a new row for detailed information
-		detailsRow = document.createElement('tr');
-		detailsRow.classList.add('details-row', 'hidden', 'border-b', 'border-gray-300', 'hover:bg-gray-200', 'dark:border-gray-600', 'dark:hover:bg-gray-700'); // Hide by default
-		table.appendChild(detailsRow);
-	} else {
-		// If the row already exists, get the next row as the details row
-		detailsRow = row.nextElementSibling;
-	}
+        // Create a new row for detailed information
+        detailsRow = document.createElement('tr');
+        detailsRow.classList.add('details-row', 'hidden', 'border-b', 'border-gray-300', 'hover:bg-gray-200', 'dark:border-gray-600', 'dark:hover:bg-gray-700'); // Hide by default
+        table.appendChild(detailsRow);
+    } else {
+        // If the row already exists, get the next row as the details row
+        detailsRow = row.nextElementSibling;
+    }
 
-	// Update row with basic information
-	row.innerHTML = `
+    // Update row with basic information
+    row.innerHTML = `
         <td class="text-left py-2 px-4 dark:text-gray-300">${server.name} 
         <span class="copy-icon" onclick="copyToClipboard('DoH Server URL: ${server.url}' + '\\n' + 'IP Addresses: ${server.ips.join(', ')}', this)">📋</span></td>
         <td class="text-center py-2 px-4 dark:text-gray-300">${server.speed.min !== 'Unavailable' ? server.speed.min.toFixed(2) : 'Unavailable'}</td>
@@ -331,8 +298,8 @@ function updateResult(server) {
         <td class="text-center py-2 px-4 dark:text-gray-300">${server.speed.max !== 'Unavailable' ? server.speed.max.toFixed(2) : 'Unavailable'}</td>
     `;
 
-	// Populate the detailed view with timings for each hostname
-	detailsRow.innerHTML = `
+    // Populate the detailed view with timings for each hostname
+    detailsRow.innerHTML = `
     <td colspan="4" class="py-2 px-4 dark:bg-gray-800 dark:text-gray-300">
         <div>Timings for each hostname:</div>
         <ul>
@@ -340,14 +307,11 @@ function updateResult(server) {
         if (typeof result.speed === 'number') {
             return `<li>${result.website}: ${result.speed.toFixed(2)} ms</li>`;
         } else {
-            return ` < li > $ {
-		result.website
-	}: Unavailable < /li>`;
-}
-}).join('')
-} <
-/ul> <
-/td>
+            return `<li>${result.website}: Unavailable</li>`;
+        }
+    }).join('')}
+        </ul>
+    </td>
 `;
 
     // Add click event listener to toggle detailed view
