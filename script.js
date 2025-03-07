@@ -19,32 +19,18 @@
  */
 const checkButton = document.getElementById('checkButton');
 const editButton = document.getElementById('editButton');
-const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'www.jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'weixin.qq.com'];
+const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'www.jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'www.amazon.com', 'www.google.com'];
 // Global variable to store chart instance
 const dnsServers = [{
-    name: "AdGuard", url: "https://dns.adguard-dns.com/dns-query", ips: ["94.140.14.14", "94.140.15.15"]
-}, {
     name: "AliDNS", url: "https://dns.alidns.com/dns-query", ips: ["223.5.5.5", "223.6.6.6"]
 }, {
     name: "OpenDNS", url: "https://doh.opendns.com/dns-query", ips: ["208.67.222.222", "208.67.220.220"]
-}, {
-    name: "CleanBrowsing",
-    url: "https://doh.cleanbrowsing.org/doh/family-filter/",
-    ips: ["185.228.168.9", "185.228.169.9"]
 }, {
     name: "Cloudflare",
     url: "https://cloudflare-dns.com/dns-query",
     type: "get",
     allowCors: true,
     ips: ["1.1.1.1", "1.0.0.1"]
-}, {
-    name: "ControlD", url: "https://freedns.controld.com/p0", ips: ["76.76.2.0", "76.223.122.150"]
-}, {
-    name: "DNS.SB",
-    url: "https://doh.dns.sb/dns-query",
-    type: "get",
-    allowCors: true,
-    ips: ["185.222.222.222", "45.11.45.11"]
 }, {
     name: "DNSPod",
     url: "https://doh.pub/dns-query",
@@ -64,25 +50,9 @@ const dnsServers = [{
 }, {
     name: "360", url: "https://doh.360.cn/dns-query", ips: ["101.226.4.6", "180.163.224.54"]
 }, {
-    name: "Canadian Shield",
-    url: "https://private.canadianshield.cira.ca/dns-query",
-    ips: ["149.112.121.10", "149.112.122.10"]
-}, {
-    name: "Digitale Gesellschaft",
-    url: "https://dns.digitale-gesellschaft.ch/dns-query",
-    ips: ["185.95.218.42", "185.95.218.43"]
-}, {
     name: "DNS for Family", url: "https://dns-doh.dnsforfamily.com/dns-query", ips: ["94.130.180.225", "78.47.64.161"]
 }, {
-    name: "IIJ", url: "https://public.dns.iij.jp/dns-query", ips: ["203.180.164.45", "203.180.166.45"]
-}, {
-    name: "LibreDNS", url: "https://doh.libredns.gr/dns-query", ips: ["116.202.176.26", "147.135.76.183"]
-}, {
-    name: "Switch", url: "https://dns.switch.ch/dns-query", ips: ["130.59.31.248", "130.59.31.251"]
-}, {
-    name: "Foundation for Applied Privacy", url: "https://doh.applied-privacy.net/query", ips: ["146.255.56.98"],
-}, {
-    name: "UncensoredDNS", url: "https://anycast.uncensoreddns.org/dns-query", ips: ["91.239.100.100", "89.233.43.71"]
+    name: "bite", ips: ["180.184.1.1", "180.184.2.2"]
 }];
 
 let dnsChart;
