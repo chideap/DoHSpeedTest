@@ -20,7 +20,7 @@
  */
 const checkButton = document.getElementById('checkButton');
 const editButton = document.getElementById('editButton');
-const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'www.jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'www.amazon.com', 'www.google.com'];
+const topWebsites = ['baidu.com', 'www.bilibili.com', 'weibo.com', 'www.jd.com', 's.taobao.com', 'www.douyin.com', 'www.xiaohongshu.com', 'www.pinduoduo.com', 'www.iqiyi.com', 'v.qq.com', 'www.amazon.com'];
 // Global variable to store chart instance
 const dnsServers = [{
 	name: "AliDNS",
